@@ -1,5 +1,5 @@
 <template>
-    <svg>        
+    <svg>
         <line
             v-for="qbit of qbits"
             :key="qbit.index + 'line'"
@@ -64,6 +64,12 @@ export default class Circuit extends Vue {
     oneGates: model.OneGate[] = []
     cNotGates: model.CNotGate[] = []
 
+    @Prop({default: 0})
+    x0!: number
+
+    @Prop({default: 0})
+    y0!: number
+
     @Prop({default: 20})
     unitWidth!: number
 
@@ -104,10 +110,11 @@ export default class Circuit extends Vue {
     //     return Math.floor(y / this.unitHeight) 
     // }
     x(j: number): number { 
-        return (j + 0.5) * this.unitWidth + this.qbitWidth
+        return this.x0 + this.qbitWidth + (j + 0.5) * this.unitWidth 
     }
     y(i: number): number { 
-        return (i + 0.5) * this.unitHeight 
+        console.log(this.y0 + 1)
+        return this.y0 + (i + 0.5) * this.unitHeight 
     }    
 
     created() {
