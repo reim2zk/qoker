@@ -5,7 +5,7 @@
             :key="qbit.index + 'line'"
             :x1="x(0)" 
             :y1="y(qbit.index)" 
-            :x2="x(numQbit)" 
+            :x2="x(numPosition)" 
             :y2="y(qbit.index)" 
             stroke="black">
         </line>
@@ -25,12 +25,30 @@
             :diameter="unitHeight-2"
         >
         </CNotGate>
+        <svg v-for="wire in wires" :key="wire.j">
+            <line
+                :x1="x(wire.j)"
+                :y1="y(wire.i1)"
+                :x2="x(wire.j)"
+                :y2="y(wire.i2)"
+                stroke="black">
+            </line>
+            <circle
+                v-for="i in wire.iDots" :key="i"
+                :cx="x(wire.j)"
+                :cy="y(i)"
+                r="3"
+                fill="black">
+            </circle>
+        </svg>
+        
     </svg>
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import * as model from './Gate'
 import * as qbitModel from './Qbit'
+import * as wireModel from './Wire'
 import * as circuitView from './CircuitView'
 import OneGate from './OneGate.vue'
 import CNotGate from './CNotGate.vue'
@@ -59,7 +77,7 @@ export default class Circuit extends Vue {
     @Prop({default: 5})
     numQbit!: number
 
-    @Prop({default: 10})
+    @Prop({default: 8})
     numPosition!: number
 
     @Prop({default: []})
@@ -67,6 +85,9 @@ export default class Circuit extends Vue {
 
     @Prop({default: []})
     cNotGates!: model.CNotGate[]
+
+    @Prop({default: []})
+    wires!: wireModel.Wire[]
 
     width(): number { 
         return this.qbitWidth + this.numPosition * this.unitWidth + this.measureWidth

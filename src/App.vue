@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Circuit :one-gates="oneGates()" :c-not-gates="cNotGates()"></Circuit>
+    <Circuit :one-gates="oneGates()" :c-not-gates="cNotGates()" :wires="wires()"></Circuit>
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Circuit from './components/quantum-circuit/Circuit.vue'
 import * as model from './components/quantum-circuit/Gate'
+import * as wireModel from './components/quantum-circuit/Wire'
 
 @Component({
   components: {
@@ -24,6 +25,12 @@ export default class App extends Vue {
   cNotGates(): model.CNotGate[] {
     return [
       new model.CNotGate(3, 4, 3)
+    ]
+  }
+  wires(): wireModel.Wire[] {
+    return [
+      new wireModel.Wire(-2, 6, 6, [2, 3]),
+      new wireModel.Wire(-2, 6, 7, [2])
     ]
   }
   getType(): model.GateType {
