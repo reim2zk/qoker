@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Circuit :one-gates="oneGates()" :c-not-gates="cNotGates()" :wires="wires()"></Circuit>
+    <Circuit :wires="wires()"></Circuit>
   </div>
 </template>
 
@@ -16,28 +16,11 @@ import * as wireModel from './components/quantum-circuit/Wire'
   },
 })
 export default class App extends Vue {
-  oneGates(): model.OneGate[] {
-    return [
-      new model.OneGate(2, 2, model.GateType.X),
-      new model.OneGate(2, 5, model.GateType.H)
-    ]
-  }
-  cNotGates(): model.CNotGate[] {
-    return [
-      new model.CNotGate(3, 4, 3)
-    ]
-  }
   wires(): wireModel.Wire[] {
     return [
       new wireModel.Wire(-2, 6, 6, [2, 3]),
       new wireModel.Wire(-2, 6, 7, [2])
     ]
-  }
-  getType(): model.GateType {
-    return model.GateType.X
-  }
-  oneGate(): model.OneGate {
-    return new model.OneGate(2, 2, model.GateType.X)
   }
 }
 </script>

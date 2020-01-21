@@ -61,6 +61,8 @@ import CNotGate from './CNotGate.vue'
 })
 export default class Circuit extends Vue {
     qbits: qbitModel.Qbit[] = []
+    oneGates: model.OneGate[] = []
+    cNotGates: model.CNotGate[] = []
 
     @Prop({default: 20})
     unitWidth!: number
@@ -79,12 +81,6 @@ export default class Circuit extends Vue {
 
     @Prop({default: 8})
     numPosition!: number
-
-    @Prop({default: []})
-    oneGates!: model.OneGate[]
-
-    @Prop({default: []})
-    cNotGates!: model.CNotGate[]
 
     @Prop({default: []})
     wires!: wireModel.Wire[]
@@ -121,6 +117,17 @@ export default class Circuit extends Vue {
             qbits.push(q)
         }
         this.qbits.splice(0, this.numQbit, ...qbits)
+
+        const oneGates = [
+            new model.OneGate(2, 2, model.GateType.X),
+            new model.OneGate(2, 5, model.GateType.H)
+        ]
+        this.oneGates.splice(0, this.oneGates.length, ...oneGates)
+
+        const cNotGates =  [
+            new model.CNotGate(3, 4, 3)
+        ]
+        this.cNotGates.splice(0, this.cNotGates.length, ...cNotGates)
     }
 }
 </script>
