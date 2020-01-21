@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <img v-for="(card, i) of cards" :key=i class="img" :src="card" width="100"/>
+    <br/>
     <Circuit :wires="wires()"></Circuit>
   </div>
 </template>
@@ -22,6 +24,13 @@ export default class App extends Vue {
       new wireModel.Wire(-2, 6, 7, [2])
     ]
   }
+  cards = [
+    require('@/assets/card_spade_1.png'),
+    require('@/assets/card_spade_2.png'),
+    require('@/assets/card_spade_3.png'),
+    require('@/assets/card_spade_4.png'),
+    require('@/assets/card_spade_5.png'),
+  ]
 }
 </script>
 
