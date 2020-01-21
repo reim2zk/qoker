@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div align="left">
-      <button> refresh </button>
+      <button @click="startGame"> start </button>
       <button> calculate </button>
       <br/>
       <img v-for="(card, i) of cards" :key="i+'card'" class="img" 
@@ -81,7 +81,11 @@ export default class App extends Vue {
   resultQbits: number[][] = [
     [0, 0, 1, 1, 0],
     [0, 1, 1, 0, 1]
-    ]
+  ]
+
+  startGame(e: any) {
+    console.log('start game')
+  }
 }
 </script>
 

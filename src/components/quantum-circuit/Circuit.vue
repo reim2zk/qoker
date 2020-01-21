@@ -113,7 +113,6 @@ export default class Circuit extends Vue {
         return this.x0 + this.qbitWidth + (j + 0.5) * this.unitWidth 
     }
     y(i: number): number { 
-        console.log(this.y0 + 1)
         return this.y0 + (i + 0.5) * this.unitHeight 
     }    
 

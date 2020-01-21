@@ -1,22 +1,22 @@
 <template>
     <svg>
-        <line v-for="j of js" :key="j"
+        <line v-for="j of js" :key="j+'wire0'"
           :x1="x0+j*dx0" :y1="y0"
           :x2="x0+j*dx0" :y2="y0+dy0"
           stroke="black"/>
-        <line v-for="j of js" :key="j"
+        <line v-for="j of js" :key="j+'wire1'"
           :x1="x0+j*dx0" :y1="y0+dy0"
           :x2="x1+j*dx1" :y2="y0+dy0+dy1"
           stroke="black"/>
-        <line v-for="j of js" :key="j"
+        <line v-for="j of js" :key="j+'wire2'"
           :x1="x1+j*dx1" :y1="y0+dy0+dy1"
           :x2="x1+j*dx1" :y2="y0+dy0+dy1+dy2"
           stroke="black"/>
-        <line v-for="j of js" :key="j"
+        <line v-for="j of js" :key="j+'wire3'"
           :x1="x1+j*dx1" :y1="y0+dy0+dy1+dy2"
           :x2="x0+j*dx0" :y2="y0+dy0+dy1*2+dy2"
           stroke="black"/>          
-        <line v-for="j of js" :key="j"
+        <line v-for="j of js" :key="j+'wire4'"
           :x1="x0+j*dx0" :y1="y0+dy0+dy1*2+dy2"
           :x2="x0+j*dx0" :y2="y0+dy0*2+dy1*2+dy2"
           stroke="black"/>
