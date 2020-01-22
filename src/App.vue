@@ -78,7 +78,7 @@ export default class App extends Vue {
     require('@/assets/card_spade_5.png'),
   ]
 
-  porker: porkerModel.Porker = porkerModel.Porker.init()
+  porker: porkerModel.Porker = new porkerModel.Porker()
   circuit: circuitModel.Circuit = circuitModel.Circuit.empty()
   cardWidth: number = 100
   unitWidth: number = 30
@@ -96,7 +96,6 @@ export default class App extends Vue {
     gs.push(new gateModel.OneGate(0, 2, gateModel.GateType.Y))
     gs.push(new gateModel.OneGate(2, 2, gateModel.GateType.Z))
     gs.push(new gateModel.OneGate(0, 3, gateModel.GateType.Z))
-    console.log(gs)
   }
 
   startGame(e: any) {
