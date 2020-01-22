@@ -4,7 +4,7 @@
       <button @click="startGame"> start </button>
       <button> calculate </button>
       <br/>
-      <VideoPorker :cardWidth="cardWidth"></VideoPorker>
+      <VideoPorker :item="porker" :cardWidth="cardWidth"></VideoPorker>
       <br/>
       <svg :width="cardWidth*cards.length" :height="210">
         <Wires :numWire="5" 
@@ -12,6 +12,7 @@
           :x1="cardWidth*(cards.length/2)" :dx1="10" 
           :y0="0" :dy0="10" :dy1="30" :dy2="130" />
         <Circuit 
+          :item="circuit"
           :unitWidth="unitWidth" 
           :wires="wires()" 
           :y0="55"
@@ -50,7 +51,9 @@ import VideoPorker from './components/porker/VideoPorker.vue'
 import * as model from './components/quantum-circuit/Gate'
 import * as wireModel from './components/quantum-circuit/Wire'
 import * as qbitModel from './components/quantum-circuit/Qbit'
-
+import * as circuitModel from './components/quantum-circuit/Circuit'
+import * as gateModel from './components/quantum-circuit/Gate'
+import * as porkerModel from './components/porker/Porker'
 
 @Component({
   components: {
@@ -75,6 +78,8 @@ export default class App extends Vue {
     require('@/assets/card_spade_5.png'),
   ]
 
+  porker: porkerModel.Porker = porkerModel.Porker.init()
+  circuit: circuitModel.Circuit = circuitModel.Circuit.empty()
   cardWidth: number = 100
   unitWidth: number = 30
   measureWidth: number = 15
@@ -84,7 +89,18 @@ export default class App extends Vue {
     [0, 1, 1, 0, 1]
   ]
 
+  created() {
+    const gs = this.circuit.oneGates
+    gs.push(new gateModel.OneGate(0, 0, gateModel.GateType.H))
+    gs.push(new gateModel.OneGate(0, 1, gateModel.GateType.X))
+    gs.push(new gateModel.OneGate(0, 2, gateModel.GateType.Y))
+    gs.push(new gateModel.OneGate(2, 2, gateModel.GateType.Z))
+    gs.push(new gateModel.OneGate(0, 3, gateModel.GateType.Z))
+    console.log(gs)
+  }
+
   startGame(e: any) {
+    this.porker.cards[0].num = 12
     console.log('start game')
   }
 }
