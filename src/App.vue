@@ -4,8 +4,7 @@
       <button @click="startGame"> start </button>
       <button> calculate </button>
       <br/>
-      <img v-for="(card, i) of cards" :key="i+'card'" class="img" 
-        :src="card" :width="cardWidth"/>
+      <VideoPorker :cardWidth="cardWidth"></VideoPorker>
       <br/>
       <svg :width="cardWidth*cards.length" :height="210">
         <Wires :numWire="5" 
@@ -46,16 +45,18 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Circuit from './components/quantum-circuit/Circuit.vue'
+import Wires from './components/quantum-circuit/Wires.vue'
+import VideoPorker from './components/porker/VideoPorker.vue'
 import * as model from './components/quantum-circuit/Gate'
 import * as wireModel from './components/quantum-circuit/Wire'
 import * as qbitModel from './components/quantum-circuit/Qbit'
-import Wires from './components/quantum-circuit/Wires.vue'
 
 
 @Component({
   components: {
     Circuit,
-    Wires
+    Wires,
+    VideoPorker
   },
 })
 export default class App extends Vue {
@@ -66,7 +67,7 @@ export default class App extends Vue {
     // ]
     return []
   }
-  cards = [
+  cards: string[] = [
     require('@/assets/card_spade_1.png'),
     require('@/assets/card_spade_2.png'),
     require('@/assets/card_spade_3.png'),
