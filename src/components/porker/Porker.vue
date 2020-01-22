@@ -10,18 +10,18 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
-import * as model from './Card'
-import * as modelPorker from './Porker'
+import * as model from '../../models/porker/Porker'
+import * as modelCard from '../../models/porker/Card'
 
 @Component
-export default class VideoPorker extends Vue {
+export default class Porker extends Vue {
     @Prop({default: 50})
     cardWidth!: number
 
-    @Prop({default: modelPorker.Porker.init})
-    item!: modelPorker.Porker
+    @Prop({default: model.Porker.init})
+    item!: model.Porker
 
-    asset(card: model.Card): string {
+    asset(card: modelCard.Card): string {
         return require(`@/assets/card_${card.mark}_${card.num}.png`)
     }
 

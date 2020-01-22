@@ -20,8 +20,7 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
-import * as model from './Gate'
-import * as circuitView from './CircuitView'
+import * as model from '../../models/quantum-circuit/Gate'
 
 @Component
 export default class OneGate extends Vue {

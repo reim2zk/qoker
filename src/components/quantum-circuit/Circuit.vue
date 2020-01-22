@@ -26,32 +26,12 @@
             :diameter="unitHeight-2"
         >
         </CNotGate>
-        <svg v-for="wire in wires" :key="wire.j">
-            <line
-                :x1="x(wire.j)"
-                :y1="y(wire.i1)"
-                :x2="x(wire.j)"
-                :y2="y(wire.i2)"
-                stroke="black">
-            </line>
-            <circle
-                v-for="i in wire.iDots" :key="i"
-                :cx="x(wire.j)"
-                :cy="y(i)"
-                r="3"
-                fill="black">
-            </circle>
-        </svg>
-        
     </svg>
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
-import * as modelGate from './Gate'
-import * as qbitModel from './Qbit'
-import * as wireModel from './Wire'
-import * as circuitView from './CircuitView'
-import * as model from './Circuit'
+import * as model from '../../models/quantum-circuit/Circuit'
+import * as modelGate from '../../models/quantum-circuit/Gate'
 import OneGate from './OneGate.vue'
 import CNotGate from './CNotGate.vue'
 
@@ -91,9 +71,6 @@ export default class Circuit extends Vue {
 
     @Prop({default: 8})
     numPosition!: number
-
-    @Prop({default: []})
-    wires!: wireModel.Wire[]
 
     width(): number { 
         return this.qbitWidth + this.numPosition * this.unitWidth + this.measureWidth
@@ -153,26 +130,6 @@ export default class Circuit extends Vue {
             return
         }
         this.selectedPart = null
-    }
-
-    created() {
-        // const qbits: qbitModel.Qbit[] = []
-        // for(let i = 0; i < this.numQbit; i++) {
-        //     const q = new qbitModel.Qbit(qbitModel.QbitType.Q0, i, true)
-        //     qbits.push(q)
-        // }
-        // this.circuit.qbits.splice(0, this.numQbit, ...qbits)
-
-        // const oneGates = [
-        //     new modelGate.OneGate(2, 2, modelGate.GateType.X),
-        //     new modelGate.OneGate(2, 5, modelGate.GateType.H)
-        // ]
-        // this.oneGates.splice(0, this.oneGates.length, ...oneGates)
-
-        // const cNotGates =  [
-        //     new model.CNotGate(3, 4, 3)
-        // ]
-        // this.cNotGates.splice(0, this.cNotGates.length, ...cNotGates)
     }
 }
 </script>
