@@ -2,7 +2,7 @@ import * as qbit from './Qbit'
 
 export enum GateType {H, X, Y, Z, CN}
 
-class GatePart {
+export class GatePart {
     gate: Gate
     indexPart: number
     constructor(gate: Gate, indexPart: number) {
@@ -68,10 +68,10 @@ export class CNotGate implements Gate {
         }
     }
     setPosition(i: number, j: number, indexPart: number): void {
-        if(j == this.j && i == this.iTarget) {
+        if(indexPart == CNotGate.INDEX_TARGET) {
             this.iTarget = i
             this.j = j
-        } else if(j == this.j && i == this.iControl) {
+        } else if(indexPart == CNotGate.INDEX_CONTROL) {
             this.iControl = i
             this.j = j
         }

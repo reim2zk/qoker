@@ -1,5 +1,5 @@
 <template>
-    <svg>
+    <svg @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup">
         <line
             v-for="qbit of qbits"
             :key="qbit.index + 'line'"
@@ -64,6 +64,8 @@ export default class Circuit extends Vue {
     oneGates: model.OneGate[] = []
     cNotGates: model.CNotGate[] = []
 
+    selectedPart: model.GatePart | null = null
+
     @Prop({default: 0})
     x0!: number
 
@@ -97,24 +99,62 @@ export default class Circuit extends Vue {
     height(): number { 
         return (this.numQbit+1) * this.unitHeight 
     }
-    // position(x: number): number | PositionType.InitQbit | PositionType.Measure { 
-    //     if(x < this.qbitWidth) {
-    //         return PositionType.InitQbit
-    //     } else if (x > this.qbitWidth + this.unitWidth * 10) {
-    //         return PositionType.Measure
-    //     } else {
-    //         return Math.floor((x - this.qbitWidth) / this.unitWidth) 
-    //     }
-    // }
-    // indexQbit(y: number): number { 
-    //     return Math.floor(y / this.unitHeight) 
-    // }
+    getJ(x: number): number { 
+        return Math.floor((x - this.x0 - this.qbitWidth) / this.unitWidth)
+    }
+    getI(y: number): number { 
+        return Math.floor((y - this.y0) / this.unitHeight) 
+    }
     x(j: number): number { 
         return this.x0 + this.qbitWidth + (j + 0.5) * this.unitWidth 
     }
     y(i: number): number { 
         return this.y0 + (i + 0.5) * this.unitHeight 
     }    
+
+    selectOneGate(gate: model.OneGate, e: MouseEvent): void {
+    }
+
+    mousedown(e: MouseEvent): void {
+        if(this.selectedPart) {
+            return
+        }
+
+        const i = this.getI(e.offsetY)
+        const j = this.getJ(e.offsetX)
+
+        for(let gate of this.oneGates) {
+            const p = gate.findPart(i, j)
+            if(p) {
+                this.selectedPart = p
+                return
+            }
+        }
+        for(let gate of this.cNotGates) {
+            const p = gate.findPart(i, j)
+            if(p) {
+                this.selectedPart = p
+                return
+            }
+        }
+    }
+
+    mousemove(e: MouseEvent): void {
+        if(!this.selectedPart) {
+            return
+        }
+
+        const i = this.getI(e.offsetY)
+        const j = this.getJ(e.offsetX)
+        this.selectedPart.setPosition(i, j)
+    }
+
+    mouseup(e: MouseEvent): void {
+        if(!this.selectedPart) {
+            return
+        }
+        this.selectedPart = null
+    }
 
     created() {
         const qbits: qbitModel.Qbit[] = []
