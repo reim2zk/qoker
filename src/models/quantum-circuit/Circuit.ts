@@ -1,9 +1,6 @@
 import {Qbit, QbitType} from './Qbit'
 import {Gate, OneGate, CNotGate, GateType, GatePart} from './Gate'
-
-function exists(xs: boolean[]): boolean {
-    return xs.reduceRight((x, y) => x || y, false)
-}
+import * as Utils from '../../utils/Utils'
 
 export class Circuit {
     qbits: Qbit[]
@@ -30,14 +27,14 @@ export class Circuit {
         if (gate instanceof OneGate) {
             const finds = this.gates.map(v => 
                 v.findPart(gate.i, gate.j) != null)
-            return exists(finds)
+            return Utils.exists(finds)
         } else if (gate instanceof CNotGate) {
             const findsTarget = this.gates.map(v => 
                 v.findPart(gate.iTarget, gate.j) != null)
             const findsControl = this.gates.map(v => 
                 v.findPart(gate.iControl, gate.j) != null)
             const finds = findsTarget.concat(findsControl)
-            return exists(finds)
+            return Utils.exists(finds)
         } else {
             console.log('GateTypeIsInvalid')
             return false

@@ -20,3 +20,7 @@ export function groupBy<K, X>(xs: X[], f: (x: X) => K): Map<K, X[]> {
   }
   return map
 }
+
+export function exists(xs: boolean[]): boolean {
+  return xs.reduceRight((x, y) => x || y, false)
+}

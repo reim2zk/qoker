@@ -31,7 +31,7 @@ export interface Gate {
     getType(): GateType
     findPart(i: number, j: number): GatePart | null
     setPosition(i: number, j: number, indexPart: number): void
-    overlap(other: Gate): boolean
+    parts(): GatePart[]
 }
 
 export class OneGate implements Gate {
@@ -58,16 +58,8 @@ export class OneGate implements Gate {
             this.j = j
         } 
     }
-    overlap(other: Gate): boolean {
-        if(other instanceof OneGate) {
-            return (this.i === other.i) && (this.j === other.j)
-        } else if(other instanceof CNotGate) {
-            return ((this.i === other.iControl) && (this.j === other.j)) ||
-                ((this.i === other.iTarget)  && (this.j === other.j))
-        } else {
-            console.log('GateTypeIsInvalid')
-            return false
-        }
+    parts(): GatePart[] {
+        return [new GatePart(this, OneGate.INDEX_PART)]
     }
 }
 
@@ -104,4 +96,21 @@ export class CNotGate implements Gate {
     overlap(other: Gate): boolean {
         return false
     }
+    parts(): GatePart[] {
+        return [
+            new GatePart(this, CNotGate.INDEX_CONTROL),
+            new GatePart(this, CNotGate.INDEX_TARGET)
+        ]
+    }
+}
+
+export function overlap(a: Gate, b: Gate): boolean {
+    a.parts().forEach(pa => {
+        b.parts().forEach(pb => {
+            if(pa.i === pb.i && pa.j === pb.j) {
+                return true
+            }
+        })
+    })
+    return false
 }
