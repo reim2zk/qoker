@@ -23,7 +23,7 @@ export class Qorker {
 
         this.circuit = Circuit.empty()
 
-        const gs = this.circuit.oneGates
+        const gs = this.circuit.gates
         gs.push(new OneGate(0, 0, GateType.H))
         gs.push(new OneGate(0, 1, GateType.X))
         gs.push(new OneGate(0, 2, GateType.Y))

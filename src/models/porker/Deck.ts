@@ -1,4 +1,5 @@
 import {Card, CardMark} from './Card'
+import * as Utils from '../../utils/Utils'
 
 export class Deck {
     cards: Card[]
@@ -13,7 +14,7 @@ export class Deck {
         }
     }
     shuffle() {
-        Deck.shuffleArray(this.cards)        
+        Utils.shuffleArray(this.cards)        
     }
     drawCards(num: number): Card[] | null{
         if(num < 1) {
@@ -25,12 +26,4 @@ export class Deck {
         const cards = this.cards.slice(0, num)
         return cards
     }
-    static shuffleArray<T>(xs: T[]) {
-        for(let i = xs.length - 1; i > 0; i--){
-            let r = Math.floor(Math.random() * (i + 1));
-            let tmp = xs[i];
-            xs[i] = xs[r];
-            xs[r] = tmp;
-        }
-    }    
 }
