@@ -6,3 +6,17 @@ export function shuffleArray<T>(xs: T[]) {
       xs[r] = tmp;
   }
 }    
+
+export function groupBy<K, X>(xs: X[], f: (x: X) => K): Map<K, X[]> {
+  const map = new Map<K, X[]>()
+  for(let x of xs) {
+    const k = f(x)
+    const xsk = map.get(k)
+    if(xsk) {
+      xsk.push(x)
+    } else {
+      map.set(k, [x])
+    }
+  }
+  return map
+}
