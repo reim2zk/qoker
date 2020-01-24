@@ -55,7 +55,8 @@ export class Qorker {
             const measures = qubits.map(v => v.measure())
             const resultCards: Card[] = measures.map((v, i) => 
                 v === 0 ? this.cards[i] : subCards[i])
-            score += this.porker.score(resultCards)
+            const point = this.porker.judgePoint(resultCards)
+            score += point.value
         }
         score = score / this.numMeasure
 

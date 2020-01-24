@@ -1,12 +1,13 @@
 import {Card} from './Card'
+import * as Utils from '../../utils/Utils'
+
+interface HandRanking {
+    name: string,
+    value: number
+}
 
 export class Porker {
-    score(cards: Card[]): number {
-        return cards.map(v => v.num).reduce((a, b) => a + b)
-    }
-
-    judgePoint(cards: Card[]) {
-
+    judgePoint(cards: Card[]): HandRanking {
         let sortedCard = cards.sort((card1, card2) => {
             return card1.num - card2.num
         });
@@ -22,41 +23,39 @@ export class Porker {
             return true;
         })();
 
-        /*
-
-        let counts = {};
-        for (let i = 0; i < sortedCard.length; i++) {
-            counts[sortedCard[i].num] = counts[sortedCard[i].num] ? counts[sortedCard[i].num] + 1 : 1;
+        const cardMap = Utils.groupBy(sortedCard, card => card.num)
+        let counts: {num: number, count: number}[] = []
+        for(let kv of cardMap.entries()) {
+            const v = {num: kv[0], count: kv[1].length}
+            counts.push(v)
         }
-        counts = Object.keys(counts).map((e) => ({key: e, value: counts[e]}));
         counts.sort(function (a, b) {
-            if (a.value < b.value) return 1;
-            if (a.value > b.value) return -1;
-            return 0;
+            if (a.count < b.count) return 1
+            if (a.count > b.count) return -1
+            return 0
         });
-        const maxHit = counts[0].value;
-        const secondHit = counts[1].value;
+        const maxHit = counts[0].count
+        const secondHit = counts[1].count
 
         // TODO Royal flush
         if (isFlush && isStraight) {
-            return 'straight flush';
+            return {name: 'StraightFlush', value: 8}
         } else if (maxHit === 4) {
-            return 'quads';
+            return {name: 'Quads', value: 4}
         } else if (maxHit === 3 && secondHit === 2) {
-            return 'full house';
+            return {name: 'FullHouse', value: 2}
         } else if (isFlush) {
-            return 'flush';
+            return {name: 'Flush', value: 2}
         } else if (isStraight) {
-            return 'straight';
+            return {name: 'Straight', value: 2}
         } else if (maxHit === 3) {
-            return 'trips';
+            return {name: 'Trips', value: 2}
         } else if (maxHit === 2 && secondHit === 2) {
-            return 'two pair';
+            return {name: 'TwoPair', value: 2}
         } else if (maxHit === 2) {
-            return 'pair';
+            return {name: 'Pair', value: 2}
         } else {
-            return 'non';
+            return {name: 'Non', value: 0}
         }
-        */
     }
 }
