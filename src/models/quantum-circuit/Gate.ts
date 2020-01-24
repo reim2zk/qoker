@@ -5,9 +5,24 @@ export enum GateType {H, X, Y, Z, CN}
 export class GatePart {
     gate: Gate
     indexPart: number
+    i: number
+    j: number
     constructor(gate: Gate, indexPart: number) {
         this.gate = gate
         this.indexPart = indexPart
+        this.i = 0
+        this.j = 0
+        if(gate instanceof OneGate) {
+            this.i = gate.i
+            this.j = gate.j
+        } else if(gate instanceof CNotGate) {
+            this.j = gate.j
+            if(indexPart == CNotGate.INDEX_CONTROL) {
+                this.i = gate.iControl
+            } else {
+                this.i = gate.iTarget
+            }
+        }
     }
     setPosition(i: number, j: number): void {
         this.gate.setPosition(i, j, this.indexPart) 
@@ -18,6 +33,7 @@ export interface Gate {
     getType(): GateType
     findPart(i: number, j: number): GatePart | null
     setPosition(i: number, j: number, indexPart: number): void
+    overlap(other: Gate): boolean
 }
 
 export class OneGate implements Gate {
@@ -43,6 +59,17 @@ export class OneGate implements Gate {
             this.i = i
             this.j = j
         } 
+    }
+    overlap(other: Gate): boolean {
+        if(other instanceof OneGate) {
+            return (this.i === other.i) && (this.j === other.j)
+        } else if(other instanceof CNotGate) {
+            return ((this.i === other.iControl) && (this.j === other.j)) ||
+                ((this.i === other.iTarget)  && (this.j === other.j))
+        } else {
+            console.log('GateTypeIsInvalid')
+            return false
+        }
     }
 }
 
@@ -75,5 +102,8 @@ export class CNotGate implements Gate {
             this.iControl = i
             this.j = j
         }
-    }    
+    }
+    overlap(other: Gate): boolean {
+        return false
+    }
 }
