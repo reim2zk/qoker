@@ -1,6 +1,6 @@
 import * as q from '@qramana/qramana'
 import { Circuit } from '../models/quantum-circuit/Circuit'
-import { GateType } from '../models/quantum-circuit/Gate'
+import { OneGate, CNotGate, GateType } from '../models/quantum-circuit/Gate'
 import { QbitType } from '../models/quantum-circuit/Qbit'
 
 export function simulate(circuit: Circuit): q.Qubit[] {
@@ -10,29 +10,28 @@ export function simulate(circuit: Circuit): q.Qubit[] {
   })
 
   for (let j = 0; j < circuit.numPosition; j++) {
-    for (let gate of circuit.oneGates) {
-      if (gate.j === j) {
-        const qubit = qubits[gate.i]
-        if (gate.type == GateType.H) {
-          qubit.h()
-        } else if (gate.type == GateType.X) {
-          qubit.x()
-        } else if (gate.type == GateType.Y) {
-          qubit.y()
-        } else if (gate.type == GateType.Z) {
-          qubit.z()
+    for (let gate of circuit.gates) {
+      if (gate instanceof OneGate) {
+        if (gate.j === j) {
+          const qubit = qubits[gate.i]
+          if (gate.type == GateType.H) {
+            qubit.h()
+          } else if (gate.type == GateType.X) {
+            qubit.x()
+          } else if (gate.type == GateType.Y) {
+            qubit.y()
+          } else if (gate.type == GateType.Z) {
+            qubit.z()
+          }
+        }
+      } else if (gate instanceof CNotGate) {
+        if (gate.j === j) {
+          const controlQubit = qubits[gate.iControl]
+          const targetQubit = qubits[gate.iTarget]
+          targetQubit.cnot(controlQubit)
         }
       }
     }
-
-    for (let gate of circuit.cNotGates) {
-      if (gate.j === j) {
-        const controlQubit = qubits[gate.iControl]
-        const targetQubit = qubits[gate.iTarget]
-        targetQubit.cnot(controlQubit)
-      }
-    }
   }
-
   return qubits
 }

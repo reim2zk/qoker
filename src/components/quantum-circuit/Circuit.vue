@@ -10,7 +10,7 @@
             stroke="black">
         </line>
         <OneGate
-            v-for="(gate, i) of item.oneGates"
+            v-for="(gate, i) of oneGates()"
             :key="i + 'one'"
             :gateType="gate.type"
             :x="x(gate.j)"
@@ -18,7 +18,7 @@
             :diameter="unitHeight-2">
         </OneGate>
         <CNotGate
-            v-for="(gate, i) of item.cNotGates"
+            v-for="(gate, i) of cNotGates()"
             :key="i + 'cnot'"
             :x="x(gate.j)"
             :yTarget="y(gate.iTarget)"
@@ -91,6 +91,26 @@ export default class Circuit extends Vue {
         return this.y0 + (i + 0.5) * this.unitHeight 
     }    
 
+    oneGates(): modelGate.OneGate[] {
+        function filter(gate: modelGate.Gate): modelGate.OneGate[] {
+            if(gate instanceof modelGate.OneGate)
+                return [gate]
+            else 
+                return []
+        }
+        return this.item.gates.flatMap(v => filter(v))
+    }
+
+    cNotGates(): modelGate.CNotGate[] {
+        function filter(gate: modelGate.Gate): modelGate.CNotGate[] {
+            if(gate instanceof modelGate.CNotGate)
+                return [gate]
+            else 
+                return []
+        }
+        return this.item.gates.flatMap(v => filter(v))
+    }
+
     mousedown(e: MouseEvent): void {
         if(this.selectedPart) {
             return
@@ -99,14 +119,7 @@ export default class Circuit extends Vue {
         const i = this.getI(e.offsetY)
         const j = this.getJ(e.offsetX)
 
-        for(let gate of this.item.oneGates) {
-            const p = gate.findPart(i, j)
-            if(p) {
-                this.selectedPart = p
-                return
-            }
-        }
-        for(let gate of this.item.cNotGates) {
+        for(let gate of this.item.gates) {
             const p = gate.findPart(i, j)
             if(p) {
                 this.selectedPart = p

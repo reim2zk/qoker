@@ -1,5 +1,3 @@
-import * as qbit from './Qbit'
-
 export enum GateType {H, X, Y, Z, CN}
 
 export class GatePart {
