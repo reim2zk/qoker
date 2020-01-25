@@ -25,7 +25,7 @@
       <rect :x="unitWidth*item.circuit.numPosition + 50" :y="5" :width="100" :height="100" fill="yellow" />
       <text :x="unitWidth*item.circuit.numPosition + 50" :y="55"
         style="user-select: none">
-          H = {{ item.score }}
+          score = x{{ item.score }}
         </text>
     </svg>
     <table>
