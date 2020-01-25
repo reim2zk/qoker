@@ -31,7 +31,7 @@
     <table>
       <tr v-for="(row, i) of item.resultRows" :key="i+'tr'">
         <td>
-          <Cards :items="row.cards" :width="cardWidth" :height="cardWidth/3"></Cards>
+          <Cards :items="row.cards" :width="cardWidth" :height="30"></Cards>
         </td>
         <td> {{ row.measures }} </td>
         <td> {{ row.count }} </td>
