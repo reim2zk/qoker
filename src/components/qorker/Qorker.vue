@@ -3,9 +3,9 @@
     <button @click="start">start</button>
     <button @click="calculate">calculate</button>
     <br />
-    <Cards :items="item.cards" :cardWidth="cardWidth"></Cards>
+    <Cards :items="item.cards" :width="cardWidth" :height="cardWidth/3"></Cards>
     <br />
-    <Cards :items="item.subCards" :cardWidth="cardWidth"></Cards>
+    <Cards :items="item.subCards" :width="cardWidth" :height="cardWidth/3"></Cards>
     <br />
     <svg :width="cardWidth*item.cards.length" :height="210">
       <!--<Wires
@@ -28,10 +28,11 @@
     <table>
       <tr v-for="(row, i) of item.resultRows" :key="i+'tr'">
         <td>
-          <Cards :items="row.cards" :cardWidth="cardWidth"></Cards>
+          <Cards :items="row.cards" :width="cardWidth" :height="cardWidth/3"></Cards>
         </td>
-        <td> {{ row.rank.name }} </td>
+        <td> {{ row.measures }} </td>
         <td> {{ row.count }} </td>
+        <td> {{ row.rank.name }} </td>
       </tr>
     </table>
   </div>

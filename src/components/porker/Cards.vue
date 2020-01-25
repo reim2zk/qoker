@@ -3,7 +3,11 @@
         <img v-for="(card, i) of items" :key="i+'card'" 
             class="img" 
             :src="asset(card)"
-            :width="cardWidth"/>    
+            :width="width"
+            :height="height ? height : 'auto'"
+            style="object-fit:cover; object-position: 0 0;"
+            
+            />
     </span>
 </template>
 <script lang="ts">
@@ -13,7 +17,10 @@ import * as model from '../../models/porker/Card'
 @Component
 export default class Cards extends Vue {
     @Prop({default: 50})
-    cardWidth!: number
+    width!: number
+
+    @Prop({default: null})
+    height!: number | null
 
     @Prop({default: []})
     items!: model.Card[]
@@ -24,3 +31,11 @@ export default class Cards extends Vue {
     }
 }
 </script>
+<style scoped>
+/* img {
+  max-width:280;
+  max-height:130;
+  width: auto;
+  height: auto;
+} */
+</style>

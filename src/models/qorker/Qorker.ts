@@ -1,5 +1,5 @@
 import {Circuit} from '../quantum-circuit/Circuit'
-import {OneGate, GateType} from '../quantum-circuit/Gate'
+import {OneGate, GateType, CNotGate} from '../quantum-circuit/Gate'
 import {Porker, Ranking} from '../porker/Porker'
 import {Card} from '../porker/Card'
 import {Deck} from '../porker/Deck'
@@ -36,7 +36,9 @@ export class Qorker {
 
         const gs = this.circuit.gates
         gs.push(new OneGate(0, 0, GateType.H))
-        // gs.push(new OneGate(0, 1, GateType.X))
+        gs.push(new CNotGate(0, 1, 1))
+        gs.push(new CNotGate(1, 2, 2))
+        gs.push(new OneGate(4, 0, GateType.H))
         // gs.push(new OneGate(0, 2, GateType.Y))
         // gs.push(new OneGate(2, 2, GateType.Z))
         // gs.push(new OneGate(0, 3, GateType.Z))
