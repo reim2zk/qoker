@@ -1,5 +1,5 @@
 import {Circuit} from '../quantum-circuit/Circuit'
-import {OneGate, GateType, CNotGate} from '../quantum-circuit/Gate'
+import {Gate, OneGate, GateType, CNotGate} from '../quantum-circuit/Gate'
 import {Poker, Ranking} from '../poker/Poker'
 import {Card} from '../poker/Card'
 import {Deck} from '../poker/Deck'
