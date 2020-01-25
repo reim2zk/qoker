@@ -19,27 +19,23 @@
             :key="qbit.index + 'line'"
             :x1="x(0)" 
             :y1="y(qbit.index)" 
-            :x2="x(numPosition)" 
+            :x2="x(item.numPosition)" 
             :y2="y(qbit.index)" 
             stroke="black">
         </line>
-        <OneGate
-            v-for="(gate, i) of oneGates()"
-            :key="i + 'one'"
-            :gateType="gate.type"
-            :x="x(gate.j)"
-            :y="y(gate.i)"
-            :diameter="unitHeight-2">
-        </OneGate>
-        <CNotGate
-            v-for="(gate, i) of cNotGates()"
-            :key="i + 'cnot'"
-            :x="x(gate.j)"
-            :yTarget="y(gate.iTarget)"
-            :yControl="y(gate.iControl)"
+        <Gate 
+            v-for="(gate, i) of item.gates"
+            :key="i+'gate'"
+            :item="gate" 
             :diameter="unitHeight-2"
-        >
-        </CNotGate>
+        />
+        <Gate v-if="selectedPart" :item="selectedPart.gate" :diameter="unitHeight-2"/>
+       <Gate 
+            v-for="(gate, i) of buttonGates"
+            :key="i+'gateb'"
+            :item="gate" 
+            :diameter="unitHeight-2"
+        />
     </svg>
 </template>
 <script lang="ts">
@@ -48,11 +44,13 @@ import * as model from '../../models/quantum-circuit/Circuit'
 import * as modelGate from '../../models/quantum-circuit/Gate'
 import OneGate from './OneGate.vue'
 import CNotGate from './CNotGate.vue'
+import Gate from './Gate.vue'
 
 @Component({
   components: {
       OneGate,
-      CNotGate
+      CNotGate,
+      Gate
   },
 })
 export default class Circuit extends Vue {
@@ -61,6 +59,8 @@ export default class Circuit extends Vue {
     item!: model.Circuit
 
     selectedPart: modelGate.GatePart | null = null
+
+    buttonGates: modelGate.Gate[] = []
 
     @Prop({default: 0})
     x0!: number
@@ -83,11 +83,8 @@ export default class Circuit extends Vue {
     @Prop({default: 5})
     numQbit!: number
 
-    @Prop({default: 8})
-    numPosition!: number
-
     width(): number { 
-        return this.qbitWidth + this.numPosition * this.unitWidth + this.measureWidth
+        return this.qbitWidth + this.item.numPosition * this.unitWidth + this.measureWidth
     }
     height(): number { 
         return (this.numQbit+1) * this.unitHeight 
@@ -132,13 +129,23 @@ export default class Circuit extends Vue {
             const i = this.getI(e.offsetY)
             const j = this.getJ(e.offsetX)
 
-            for(let gate of this.item.gates) {
-                const p = gate.findPart(i, j)
+            this.item.gates.forEach((v, idx) => {
+                const p = v.findPart(i, j)
                 if(p) {
+                    this.item.gates.splice(idx, 1)
                     this.selectedPart = p
                     return
                 }
-            }
+            })
+
+            this.buttonGates.forEach((v, idx) => {
+                const p = v.findPart(i, j)
+                if(p) {
+                    p.gate = p.gate.clone()
+                    this.selectedPart = p
+                    return
+                }
+            })
         }
     }
 
@@ -152,8 +159,23 @@ export default class Circuit extends Vue {
 
     mouseup(e: MouseEvent): void {
         if(this.selectedPart) {
+            const g = this.selectedPart.gate
+            if(this.item.validateGate(g)) {
+                this.item.gates.push(g)
+            }
             this.selectedPart = null
         } 
+    }
+
+    created() {
+        const bs = [
+            new modelGate.OneGate(this.numQbit, 1, modelGate.GateType.H),
+            new modelGate.OneGate(this.numQbit, 2, modelGate.GateType.X),
+            new modelGate.OneGate(this.numQbit, 3, modelGate.GateType.Y),
+            new modelGate.OneGate(this.numQbit, 4, modelGate.GateType.Z),
+            new modelGate.CNotGate(this.numQbit+1, this.numQbit, 5)
+        ]
+        this.buttonGates.splice(0, 0, ...bs)
     }
 }
 </script>

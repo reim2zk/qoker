@@ -32,6 +32,7 @@ export interface Gate {
     findPart(i: number, j: number): GatePart | null
     setPosition(i: number, j: number, indexPart: number): void
     parts(): GatePart[]
+    clone(): Gate
 }
 
 export class OneGate implements Gate {
@@ -60,6 +61,9 @@ export class OneGate implements Gate {
     }
     parts(): GatePart[] {
         return [new GatePart(this, OneGate.INDEX_PART)]
+    }
+    clone(): Gate {
+        return new OneGate(this.i, this.j ,this.type)
     }
 }
 
@@ -104,6 +108,9 @@ export class CNotGate implements Gate {
             new GatePart(this, CNotGate.INDEX_CONTROL),
             new GatePart(this, CNotGate.INDEX_TARGET)
         ]
+    }
+    clone(): Gate {
+        return new CNotGate(this.iControl, this.iTarget, this.j)
     }
 }
 

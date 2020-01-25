@@ -7,12 +7,6 @@
     <br />
     <Cards :items="item.subCards" :width="cardWidth" :height="cardWidth/3"></Cards>
     <br />
-    <button @click="addGateH">H</button>
-    <button @click="addGateX">X</button>
-    <button @click="addGateY">Y</button>
-    <button @click="addGateZ">Z</button>
-    <button @click="addGateCN">C-Not</button>
-    <br/>
     <svg :width="cardWidth*item.cards.length" :height="210">
       <!--<Wires
         :numWire="5"
@@ -26,8 +20,8 @@
         :dy2="130"
       />-->
       <Circuit :item="item.circuit" :unitWidth="unitWidth" :y0="5" :numPosition="10" />
-      <rect :x="cardWidth*item.cards.length-110" :y="50" :width="100" :height="100" fill="yellow" />
-      <text :x="cardWidth*item.cards.length-110" :y="100">
+      <rect :x="unitWidth*item.circuit.numPosition + 50" :y="5" :width="100" :height="100" fill="yellow" />
+      <text :x="unitWidth*item.circuit.numPosition + 50" :y="55">
           H = {{ item.score }}
         </text>
     </svg>
@@ -73,26 +67,6 @@ export default class Qoker extends Vue {
 
   calculate(e: any) {
     this.item.calculate()
-  }
-
-  addGateH(e: any) {
-    this.item.circuit.addGate(gateModel.GateType.H)
-  }
-
-  addGateX(e: any) {
-    this.item.circuit.addGate(gateModel.GateType.X)
-  }
-
-  addGateY(e: any) {
-    this.item.circuit.addGate(gateModel.GateType.Y)
-  }
-
-  addGateZ(e: any) {
-    this.item.circuit.addGate(gateModel.GateType.Z)
-  }
-
-  addGateCN(e: any) {
-    this.item.circuit.addGate(gateModel.GateType.CN)
   }
 }
 </script>
