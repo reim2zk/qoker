@@ -86,8 +86,11 @@ export class CNotGate implements Gate {
     }
     setPosition(i: number, j: number, indexPart: number): void {
         if(indexPart == CNotGate.INDEX_TARGET) {
+            const di = this.iControl - this.iTarget
+            this.iControl = i + di
             this.iTarget = i
             this.j = j
+
         } else if(indexPart == CNotGate.INDEX_CONTROL) {
             this.iControl = i
             this.j = j
