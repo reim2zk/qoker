@@ -96,13 +96,16 @@ export class Qorker {
     }
 
     private encode(measures: number[]): number {
-        return measures.map((v, i) => v*2**i).reduce((a, b)=>a+b)
+        const result = measures.map((v, i) => v*2**i).reduce((a, b)=>a+b)
+        return result
     }
 
     private decode(value: number): number[] {
         const result = []
         for(let i = 0; i < Qorker.NUM_CARDS; i++) {
-            result.push(value % (2**(i+1)))
+            const v = value % 2
+            value = Math.floor(value / 2)
+            result.push(v)
         }
         return result
     }

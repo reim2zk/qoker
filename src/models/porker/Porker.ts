@@ -7,7 +7,10 @@ export interface Ranking {
 }
 
 export class Porker {
-    judgeRanking(cards: Card[]): Ranking {
+    judgeRanking(originalCards: Card[]): Ranking {
+        const cards: Card[] = []
+        cards.splice(0, 0, ...originalCards)
+
         let sortedCard = cards.sort((card1, card2) => {
             return card1.num - card2.num
         });
