@@ -1,5 +1,21 @@
 <template>
     <svg @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup">
+        <rect
+            :x=x(-1)
+            :y=y(-1)
+            :width="width()"
+            :height="height()"
+            fill="cyan">
+        </rect>
+        <!--
+        <text
+            v-for="qubit of item.qbits"
+            :key="qubit.index+'qubit'"
+            :x="x(-1)" 
+            :y="y(qubit.index)">
+            {{ qubit.toString() }}
+        </text>
+        -->
         <line
             v-for="qbit of item.qbits"
             :key="qbit.index + 'line'"
@@ -114,35 +130,32 @@ export default class Circuit extends Vue {
     mousedown(e: MouseEvent): void {
         if(this.selectedPart) {
             return
-        }
+        } else {
+            const i = this.getI(e.offsetY)
+            const j = this.getJ(e.offsetX)
 
-        const i = this.getI(e.offsetY)
-        const j = this.getJ(e.offsetX)
-
-        for(let gate of this.item.gates) {
-            const p = gate.findPart(i, j)
-            if(p) {
-                this.selectedPart = p
-                return
+            for(let gate of this.item.gates) {
+                const p = gate.findPart(i, j)
+                if(p) {
+                    this.selectedPart = p
+                    return
+                }
             }
         }
     }
 
     mousemove(e: MouseEvent): void {
-        if(!this.selectedPart) {
-            return
-        }
-
-        const i = this.getI(e.offsetY)
-        const j = this.getJ(e.offsetX)
-        this.selectedPart.setPosition(i, j)
+        if(this.selectedPart) {
+            const i = this.getI(e.offsetY)
+            const j = this.getJ(e.offsetX)
+            this.selectedPart.setPosition(i, j)           
+        } 
     }
 
     mouseup(e: MouseEvent): void {
-        if(!this.selectedPart) {
-            return
-        }
-        this.selectedPart = null
+        if(this.selectedPart) {
+            this.selectedPart = null
+        } 
     }
 }
 </script>

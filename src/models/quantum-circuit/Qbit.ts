@@ -9,6 +9,14 @@ export class Qbit {
         this.index = index
         this.measure = measure
     }
+    toString(): string {
+        switch(this.type) {
+            case QbitType.Q0:
+                return '|0>'
+            case QbitType.Q1:
+                return '|1>'
+        }
+    }
     swapQbit(): void {
         switch(this.type) {
             case QbitType.Q0:
