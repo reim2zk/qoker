@@ -12,7 +12,7 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
-import * as model from '../../models/porker/Card'
+import * as model from '../../models/poker/Card'
 
 @Component
 export default class Cards extends Vue {

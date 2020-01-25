@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Qorker></Qorker>
+    <Qoker></Qoker>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Qorker from './components/qorker/Qorker.vue'
+import Qoker from './components/qoker/Qoker.vue'
 
 @Component({
   components: {
-    Qorker
+    Qoker
   },
 })
 export default class App extends Vue {}

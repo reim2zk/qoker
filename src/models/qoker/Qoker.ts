@@ -1,8 +1,8 @@
 import {Circuit} from '../quantum-circuit/Circuit'
 import {OneGate, GateType, CNotGate} from '../quantum-circuit/Gate'
-import {Porker, Ranking} from '../porker/Porker'
-import {Card} from '../porker/Card'
-import {Deck} from '../porker/Deck'
+import {Poker, Ranking} from '../poker/Poker'
+import {Card} from '../poker/Card'
+import {Deck} from '../poker/Deck'
 import {simulate} from '../../utils/Simulate'
 import * as Utils from '../../utils/Utils'
 
@@ -14,8 +14,8 @@ interface ResultRow {
     rank: Ranking
 }
 
-export class Qorker {
-    porker: Porker
+export class Qoker {
+    poker: Poker
     cards: Card[]
     subCards: Card[]
     deck: Deck
@@ -26,11 +26,11 @@ export class Qorker {
     static NUM_CARDS = 5
 
     constructor() {
-        this.porker = new Porker()
+        this.poker = new Poker()
         this.deck = new Deck()
         this.deck.shuffle()
-        this.cards = this.deck.drawCards(Qorker.NUM_CARDS)!
-        this.subCards = this.deck.drawCards(Qorker.NUM_CARDS)!
+        this.cards = this.deck.drawCards(Qoker.NUM_CARDS)!
+        this.subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
 
         this.circuit = Circuit.empty()
 
@@ -49,11 +49,11 @@ export class Qorker {
 
     start() {
         this.deck.shuffle()
-        const cards = this.deck.drawCards(Qorker.NUM_CARDS)!
+        const cards = this.deck.drawCards(Qoker.NUM_CARDS)!
         this.cards.splice(0, cards.length, ...cards)
 
         this.deck.shuffle()
-        const subCards = this.deck.drawCards(Qorker.NUM_CARDS)!
+        const subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
         this.subCards.splice(0, subCards.length, ...subCards)
     }
 
@@ -77,7 +77,7 @@ export class Qorker {
             const count = v.count
             const cards: Card[] = measures.map((v, i) => 
                 v === 0 ? this.cards[i] : this.subCards[i])
-            const rank = this.porker.judgeRanking(cards)
+            const rank = this.poker.judgeRanking(cards)
             const res: ResultRow = {
                 measures: measures,
                 count: count,
@@ -104,7 +104,7 @@ export class Qorker {
 
     private decode(value: number): number[] {
         const result = []
-        for(let i = 0; i < Qorker.NUM_CARDS; i++) {
+        for(let i = 0; i < Qoker.NUM_CARDS; i++) {
             const v = value % 2
             value = Math.floor(value / 2)
             result.push(v)

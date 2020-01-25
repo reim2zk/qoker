@@ -6,7 +6,7 @@ export interface Ranking {
     value: number
 }
 
-export class Porker {
+export class Poker {
     judgeRanking(originalCards: Card[]): Ranking {
         const cards: Card[] = []
         cards.splice(0, 0, ...originalCards)

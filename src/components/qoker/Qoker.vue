@@ -41,9 +41,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Circuit from "../quantum-circuit/Circuit.vue";
-import Cards from "../porker/Cards.vue";
-import Wires from "../qorker/Wires.vue";
-import * as model from "../../models/qorker/Qorker";
+import Cards from "../poker/Cards.vue";
+import Wires from "../qoker/Wires.vue";
+import * as model from "../../models/qoker/Qoker";
 @Component({
   components: {
     Circuit,
@@ -51,8 +51,8 @@ import * as model from "../../models/qorker/Qorker";
     Cards
   }
 })
-export default class Qorker extends Vue {
-  item: model.Qorker = new model.Qorker()
+export default class Qoker extends Vue {
+  item: model.Qoker = new model.Qoker()
   cardWidth: number = 100;
   unitWidth: number = 30;
   measureWidth: number = 15;
