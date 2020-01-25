@@ -7,7 +7,6 @@
             :height="height()"
             fill="cyan">
         </rect>
-        <!--
         <text
             v-for="qubit of item.qbits"
             :key="qubit.index+'qubit'"
@@ -15,7 +14,6 @@
             :y="y(qubit.index)">
             {{ qubit.toString() }}
         </text>
-        -->
         <line
             v-for="qbit of item.qbits"
             :key="qbit.index + 'line'"

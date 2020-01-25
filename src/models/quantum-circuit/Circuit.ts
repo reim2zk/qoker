@@ -17,6 +17,23 @@ export class Circuit {
     static empty(): Circuit {
         return new Circuit(5, 10)
     }
+    validateGate(gate: Gate): boolean {
+        let iMin = 0
+        let iMax = 0
+        if(gate instanceof OneGate) {
+            iMin = gate.i
+            iMax = gate.i
+        } else if(gate instanceof CNotGate) {
+            iMin = Math.min(gate.iControl, gate.iTarget)
+            iMax = Math.max(gate.iControl, gate.iTarget)
+        } else {
+            console.log('gate is invalid')
+            return false
+        }
+        return (
+            0 <= iMin   && iMax   < this.qbits.length &&
+            1 <= gate.j && gate.j < this.numPosition)
+    }
     addGate(gateType: GateType): void {
         var gate: Gate = (gateType === GateType.CN) ? 
             new CNotGate(0, 1, 0) : 
