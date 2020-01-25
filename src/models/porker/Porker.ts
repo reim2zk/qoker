@@ -1,13 +1,13 @@
 import {Card} from './Card'
 import * as Utils from '../../utils/Utils'
 
-interface HandRanking {
+export interface Ranking {
     name: string,
     value: number
 }
 
 export class Porker {
-    judgePoint(cards: Card[]): HandRanking {
+    judgeRanking(cards: Card[]): Ranking {
         let sortedCard = cards.sort((card1, card2) => {
             return card1.num - card2.num
         });
@@ -23,12 +23,7 @@ export class Porker {
             return true;
         })();
 
-        const cardMap = Utils.groupBy(sortedCard, card => card.num)
-        let counts: {num: number, count: number}[] = []
-        for(let kv of cardMap.entries()) {
-            const v = {num: kv[0], count: kv[1].length}
-            counts.push(v)
-        }
+        const counts = Utils.count(cards.map(card => card.num))
         counts.sort(function (a, b) {
             if (a.count < b.count) return 1
             if (a.count > b.count) return -1

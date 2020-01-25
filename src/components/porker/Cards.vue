@@ -19,7 +19,8 @@ export default class Cards extends Vue {
     items!: model.Card[]
 
     asset(card: model.Card): string {
-        return require(`@/assets/card_${card.mark}_${card.num}.png`)
+        const num = ('00' + card.num ).slice( -2 );
+        return require(`@/assets/card_${card.mark}_${num}.png`)
     }
 }
 </script>

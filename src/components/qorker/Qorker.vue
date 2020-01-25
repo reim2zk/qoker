@@ -5,6 +5,8 @@
     <br />
     <Cards :items="item.cards" :cardWidth="cardWidth"></Cards>
     <br />
+    <Cards :items="item.subCards" :cardWidth="cardWidth"></Cards>
+    <br />
     <svg :width="cardWidth*item.cards.length" :height="210">
       <!--<Wires
         :numWire="5"
@@ -24,11 +26,12 @@
         </text>
     </svg>
     <table>
-      <tr v-for="(js, i) of item.results" :key="i+'tr'">
-        <td v-for="(j, i) of js" :key="i+'td'" :width="cardWidth-3">
-          <center>{{ j }}</center>
+      <tr v-for="(row, i) of item.resultRows" :key="i+'tr'">
+        <td>
+          <Cards :items="row.cards" :cardWidth="cardWidth"></Cards>
         </td>
-        <td>11.2</td>
+        <td> {{ row.rank.name }} </td>
+        <td> {{ row.count }} </td>
       </tr>
     </table>
   </div>

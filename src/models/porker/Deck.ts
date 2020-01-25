@@ -11,6 +11,9 @@ export class Deck {
         this.cards = []
         for(let i = 1; i <= 12; i++) {
             this.cards.push(new Card(i, CardMark.Spade))
+            this.cards.push(new Card(i, CardMark.Club))
+            this.cards.push(new Card(i, CardMark.Heart))
+            this.cards.push(new Card(i, CardMark.Diamond))
         }
     }
     shuffle() {
@@ -24,6 +27,7 @@ export class Deck {
             return null
         }
         const cards = this.cards.slice(0, num)
+        this.cards.splice(0, cards.length)
         return cards
     }
 }

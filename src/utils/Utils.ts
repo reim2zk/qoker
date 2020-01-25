@@ -21,6 +21,16 @@ export function groupBy<K, X>(xs: X[], f: (x: X) => K): Map<K, X[]> {
   return map
 }
 
+export function count<T>(xs: T[]): {value: T, count: number}[] {
+  const cardMap = groupBy(xs, x => x)
+  let counts: {value: T, count: number}[] = []
+  for(let kv of cardMap.entries()) {
+      const v = {value: kv[0], count: kv[1].length}
+      counts.push(v)
+  }
+  return counts
+}
+
 export function exists(xs: boolean[]): boolean {
   return xs.reduceRight((x, y) => x || y, false)
 }
