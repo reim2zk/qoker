@@ -5,22 +5,31 @@
             :y=y(-1)
             :width="width()"
             :height="height()"
-            fill="cyan">
+            fill="silver">
+        </rect>
+        <rect
+            :x=x(0)
+            :y=y(this.numQubit)
+            :width="unitWidth*6"
+            :height="unitHeight*2"
+            fill="gray">
         </rect>
         <text
-            v-for="qubit of item.qbits"
+            v-for="qubit of item.qubits"
             :key="qubit.index+'qubit'"
             :x="x(-1)" 
-            :y="y(qubit.index)">
+            :y="y(qubit.index)"
+            dominant-baseline="central"
+            style="user-select: none">
             {{ qubit.toString() }}
         </text>
         <line
-            v-for="qbit of item.qbits"
-            :key="qbit.index + 'line'"
+            v-for="qubit of item.qubits"
+            :key="qubit.index + 'line'"
             :x1="x(0)" 
-            :y1="y(qbit.index)" 
+            :y1="y(qubit.index)" 
             :x2="x(item.numPosition)" 
-            :y2="y(qbit.index)" 
+            :y2="y(qubit.index)" 
             stroke="black">
         </line>
         <Gate 
@@ -75,28 +84,28 @@ export default class Circuit extends Vue {
     unitHeight!: number
 
     @Prop({default: 15})
-    qbitWidth!: number
+    qubitWidth!: number
 
     @Prop({default: 15})
     measureWidth!: number
 
     @Prop({default: 5})
-    numQbit!: number
+    numQubit!: number
 
     width(): number { 
-        return this.qbitWidth + this.item.numPosition * this.unitWidth + this.measureWidth
+        return this.qubitWidth + this.item.numPosition * this.unitWidth + this.measureWidth
     }
     height(): number { 
-        return (this.numQbit+1) * this.unitHeight 
+        return (this.numQubit+1) * this.unitHeight 
     }
     getJ(x: number): number { 
-        return Math.floor((x - this.x0 - this.qbitWidth) / this.unitWidth)
+        return Math.floor((x - this.x0 - this.qubitWidth) / this.unitWidth)
     }
     getI(y: number): number { 
         return Math.floor((y - this.y0) / this.unitHeight) 
     }
     x(j: number): number { 
-        return this.x0 + this.qbitWidth + (j + 0.5) * this.unitWidth 
+        return this.x0 + this.qubitWidth + (j + 0.5) * this.unitWidth 
     }
     y(i: number): number { 
         return this.y0 + (i + 0.5) * this.unitHeight 
@@ -168,12 +177,13 @@ export default class Circuit extends Vue {
     }
 
     created() {
+        const i = this.numQubit + 1
         const bs = [
-            new modelGate.OneGate(this.numQbit, 1, modelGate.GateType.H),
-            new modelGate.OneGate(this.numQbit, 2, modelGate.GateType.X),
-            new modelGate.OneGate(this.numQbit, 3, modelGate.GateType.Y),
-            new modelGate.OneGate(this.numQbit, 4, modelGate.GateType.Z),
-            new modelGate.CNotGate(this.numQbit+1, this.numQbit, 5)
+            new modelGate.OneGate(i, 1, modelGate.GateType.H),
+            new modelGate.OneGate(i, 2, modelGate.GateType.X),
+            new modelGate.OneGate(i, 3, modelGate.GateType.Y),
+            new modelGate.OneGate(i, 4, modelGate.GateType.Z),
+            new modelGate.CNotGate(i+1, i, 5)
         ]
         this.buttonGates.splice(0, 0, ...bs)
     }

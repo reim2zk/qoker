@@ -1,5 +1,4 @@
 import {Circuit} from '../quantum-circuit/Circuit'
-import {Gate, OneGate, GateType, CNotGate} from '../quantum-circuit/Gate'
 import {Poker, Ranking} from '../poker/Poker'
 import {Card} from '../poker/Card'
 import {Deck} from '../poker/Deck'
@@ -33,16 +32,6 @@ export class Qoker {
         this.subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
 
         this.circuit = Circuit.empty()
-
-        const gs = this.circuit.gates
-        gs.push(new OneGate(0, 3, GateType.H))
-        gs.push(new CNotGate(0, 1, 1))
-        gs.push(new CNotGate(2, 3, 2))
-        gs.push(new OneGate(4, 3, GateType.H))
-        // gs.push(new OneGate(0, 2, GateType.Y))
-        // gs.push(new OneGate(2, 2, GateType.Z))
-        // gs.push(new OneGate(0, 3, GateType.Z))
-
         this.resultRows = []
         this.numMeasure = 100
     }

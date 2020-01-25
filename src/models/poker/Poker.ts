@@ -37,21 +37,21 @@ export class Poker {
 
         // TODO Royal flush
         if (isFlush && isStraight) {
-            return {name: 'StraightFlush', value: 8}
+            return {name: 'StraightFlush', value: 50}
         } else if (maxHit === 4) {
-            return {name: 'Quads', value: 4}
+            return {name: 'Quads', value: 20}
         } else if (maxHit === 3 && secondHit === 2) {
-            return {name: 'FullHouse', value: 2}
+            return {name: 'FullHouse', value: 6}
         } else if (isFlush) {
-            return {name: 'Flush', value: 2}
+            return {name: 'Flush', value: 5}
         } else if (isStraight) {
-            return {name: 'Straight', value: 2}
+            return {name: 'Straight', value: 4}
         } else if (maxHit === 3) {
-            return {name: 'Trips', value: 2}
+            return {name: 'Trips', value: 3}
         } else if (maxHit === 2 && secondHit === 2) {
             return {name: 'TwoPair', value: 2}
         } else if (maxHit === 2) {
-            return {name: 'Pair', value: 2}
+            return {name: 'Pair', value: 1}
         } else {
             return {name: 'Non', value: 0}
         }

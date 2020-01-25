@@ -1,15 +1,15 @@
-import {Qbit, QbitType} from './Qbit'
+import {Qubit, QubitType} from './Qubit'
 import {Gate, OneGate, CNotGate, GateType, GatePart} from './Gate'
 import * as Utils from '../../utils/Utils'
 
 export class Circuit {
-    qbits: Qbit[]
+    qubits: Qubit[]
     numPosition: number
     gates: Gate[]
-    constructor(numQbit: number, numPosition: number) {
-        this.qbits = []
-        for(let i = 0; i < numQbit; i++) {
-            this.qbits.push(new Qbit(QbitType.Q0, i, false))
+    constructor(numQubit: number, numPosition: number) {
+        this.qubits = []
+        for(let i = 0; i < numQubit; i++) {
+            this.qubits.push(new Qubit(QubitType.Q0, i))
         }
         this.numPosition = numPosition
         this.gates = []
@@ -31,7 +31,7 @@ export class Circuit {
             return false
         }
         return (
-            0 <= iMin   && iMax   < this.qbits.length &&
+            0 <= iMin   && iMax   < this.qubits.length &&
             1 <= gate.j && gate.j < this.numPosition)
     }
     addGate(gateType: GateType): void {

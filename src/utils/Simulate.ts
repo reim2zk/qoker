@@ -1,12 +1,12 @@
 import * as q from '@qramana/qramana'
 import { Circuit } from '../models/quantum-circuit/Circuit'
 import { Gate, OneGate, CNotGate, GateType } from '../models/quantum-circuit/Gate'
-import { QbitType } from '../models/quantum-circuit/Qbit'
+import { QubitType } from '../models/quantum-circuit/Qubit'
 import * as Utils from '../utils/Utils'
 
 export function simulate(circuit: Circuit): q.Qubit[] {
-  const qubits = circuit.qbits.map(v => {
-    const value = (v.type == QbitType.Q0) ? "|0>" : "|1>"
+  const qubits = circuit.qubits.map(v => {
+    const value = (v.type == QubitType.Q0) ? "|0>" : "|1>"
     return new q.Qubit({ value: value })
   })
     

@@ -3,11 +3,13 @@
     <button @click="start">start</button>
     <button @click="calculate">calculate</button>
     <br />
-    <Cards :items="item.cards" :width="cardWidth" :height="cardWidth/3"></Cards>
+    <Cards :items="item.cards" :width="cardWidth"></Cards>
+    <span style="font-size: 25px"> |0> </span>
     <br />
-    <Cards :items="item.subCards" :width="cardWidth" :height="cardWidth/3"></Cards>
+    <Cards :items="item.subCards" :width="cardWidth"></Cards>
+    <span style="font-size: 25px"> |1> </span>
     <br />
-    <svg :width="cardWidth*item.cards.length" :height="210">
+    <svg :width="cardWidth*item.cards.length" :height="unitHeight*8">
       <!--<Wires
         :numWire="5"
         :x0="cardWidth/2"
@@ -21,7 +23,8 @@
       />-->
       <Circuit :item="item.circuit" :unitWidth="unitWidth" :y0="5" :numPosition="10" />
       <rect :x="unitWidth*item.circuit.numPosition + 50" :y="5" :width="100" :height="100" fill="yellow" />
-      <text :x="unitWidth*item.circuit.numPosition + 50" :y="55">
+      <text :x="unitWidth*item.circuit.numPosition + 50" :y="55"
+        style="user-select: none">
           H = {{ item.score }}
         </text>
     </svg>
