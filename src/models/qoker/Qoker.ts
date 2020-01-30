@@ -20,7 +20,7 @@ export class Qoker {
     deck: Deck
     circuit: Circuit
     resultRows: ResultRow[]
-    score: number | null = null
+    score: number = 100
     numMeasure: number
     static NUM_CARDS = 5
 
@@ -44,6 +44,8 @@ export class Qoker {
         this.deck.shuffle()
         const subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
         this.subCards.splice(0, subCards.length, ...subCards)
+
+        this.circuit.clean()
     }
 
     calculate() {

@@ -40,6 +40,9 @@ export class Circuit {
             new OneGate(0, 0, gateType)
         this.gates.push(gate)
     }
+    clean(): void {
+        this.gates.splice(0, this.gates.length)
+    }
     overlapGate(gate: Gate): boolean {
         if (gate instanceof OneGate) {
             const finds = this.gates.map(v => 

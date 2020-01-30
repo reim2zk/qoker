@@ -22,12 +22,19 @@ export default class Cards extends Vue {
     @Prop({default: null})
     height!: number | null
 
+    @Prop({default: false})
+    isBack!: boolean
+
     @Prop({default: []})
     items!: model.Card[]
 
     asset(card: model.Card): string {
-        const num = ('00' + card.num ).slice( -2 );
-        return require(`@/assets/card_${card.mark}_${num}.png`)
+        if (this.isBack) {
+            return require('@/assets/card_back.png')
+        } else {
+            const num = ('00' + card.num ).slice( -2 );
+            return require(`@/assets/card_${card.mark}_${num}.png`)
+        }
     }
 }
 </script>
