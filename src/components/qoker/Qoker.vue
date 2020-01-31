@@ -29,6 +29,7 @@
       <Circuit :item="item.circuit" :unitWidth="unitWidth" :y0="5" :numPosition="10" />
     </svg>
     <Result :item="item.result" :cardWidth="cardWidth" :cardHeight="cardHeight">
+    </Result>
   </div>
 </template>
 
