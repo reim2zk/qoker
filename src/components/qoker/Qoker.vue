@@ -1,10 +1,10 @@
 <template>
   <div align="center">
     <h1>Quantum Poker</h1>
-    <button v-if="showStart()" @click="start">start</button>
-    <button v-if="showCalculate()" @click="calculate">calculate</button>
-    <button v-if="showContinue()" @click="continueGame">next</button>
-    <span> SCORE = {{ item.score }} </span>
+    <button v-if="item.isWelcome()" @click="start">start</button>
+    <button v-else-if="item.isChoosing()" @click="calculate">calculate</button>
+    <button v-else-if="item.isResult()" @click="continueGame">next</button>
+    <span> SCORE = {{ item.score }}  Remaining = {{ item.remainingCount }} </span>
     <br />
     <Cards :items="item.cards" :width="cardWidth" :isBack="isBack()"></Cards>
     <!-- <span style="font-size: 25px"> |0> </span> -->
@@ -28,16 +28,7 @@
       /> -->
       <Circuit :item="item.circuit" :unitWidth="unitWidth" :y0="5" :numPosition="10" />
     </svg>
-    <table>
-      <tr v-for="(row, i) of item.resultRows" :key="i+'tr'">
-        <td>
-          <Cards :items="row.cards" :width="cardWidth" :height="30"></Cards>
-        </td>
-        <td> {{ row.measures }} </td>
-        <td> {{ row.count }} </td>
-        <td> {{ row.rank.name }} </td>
-      </tr>
-    </table>
+    <Result :item="item.result" :cardWidth="cardWidth" :cardHeight="cardHeight">
   </div>
 </template>
 
@@ -45,19 +36,16 @@
 import { Component, Vue } from "vue-property-decorator";
 import Circuit from "../quantum-circuit/Circuit.vue";
 import Cards from "../poker/Cards.vue";
-import Wires from "../qoker/Wires.vue";
+import Wires from "./Wires.vue";
+import Result from "./Result.vue";
 import * as model from "../../models/qoker/Qoker";
 import * as gateModel from "../../models/quantum-circuit/Gate";
-enum Status {
-  Zero,
-  ChoseHand,
-  Result
-}
 @Component({
   components: {
     Circuit,
     Wires,
-    Cards
+    Cards,
+    Result
   }
 })
 export default class Qoker extends Vue {
@@ -65,39 +53,19 @@ export default class Qoker extends Vue {
   cardWidth: number = 100;
   unitWidth: number = 30;
   measureWidth: number = 15;
-  status: Status = Status.Zero
-
-  showStart(): Boolean {
-    return this.status === Status.Zero
-  }
-
-  showCalculate(): Boolean {
-    return this.status === Status.ChoseHand
-  }
-  
-  showContinue(): Boolean {
-    return this.status === Status.Result
-  }
-
-  isBack(): Boolean {
-    return this.status === Status.Zero
-  }
 
   created() {
   }
 
   start(e: any) {
-    this.status = Status.ChoseHand
     this.item.start()
   }
 
   calculate(e: any) {
-    this.status = Status.Result
     this.item.calculate()
   }
 
   continueGame(e: any) {
-    this.status = Status.ChoseHand
     this.item.start()
   }
 }

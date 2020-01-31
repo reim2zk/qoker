@@ -1,16 +1,17 @@
+import {Result, Row} from './Result'
 import {Circuit} from '../quantum-circuit/Circuit'
-import {Poker, Ranking} from '../poker/Poker'
+import {Poker} from '../poker/Poker'
 import {Card} from '../poker/Card'
 import {Deck} from '../poker/Deck'
 import {simulate} from '../../utils/Simulate'
 import * as Utils from '../../utils/Utils'
 
-interface ResultRow {
-    measures: number[]
-    count: number
-    prob: number
-    cards: Card[]
-    rank: Ranking
+
+enum Status {
+    Welcome,
+    Choosing,
+    Result,
+    Finish
 }
 
 export class Qoker {
@@ -19,10 +20,15 @@ export class Qoker {
     subCards: Card[]
     deck: Deck
     circuit: Circuit
-    resultRows: ResultRow[]
-    score: number = 100
-    numMeasure: number
+    result: Result
+    point: number
+    remainingCount: number
+    status: Status
+
+    numMeasure: number = 100
     static NUM_CARDS = 5
+    static INITIAL_COUNT = 10
+    static INITIAL_POINT = 100
 
     constructor() {
         this.poker = new Poker()
@@ -32,11 +38,15 @@ export class Qoker {
         this.subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
 
         this.circuit = Circuit.empty()
-        this.resultRows = []
-        this.numMeasure = 100
+        this.result = { score: 0, rows: []}
+        this.point = Qoker.INITIAL_POINT
+        this.remainingCount = Qoker.INITIAL_COUNT
+        this.status = Status.Welcome
     }
 
     start() {
+        this.status = Status.Choosing
+
         this.deck.shuffle()
         const cards = this.deck.drawCards(Qoker.NUM_CARDS)!
         this.cards.splice(0, cards.length, ...cards)
@@ -49,11 +59,20 @@ export class Qoker {
     }
 
     calculate() {
-        this.resultRows = this.calculateResultRows()
-        this.score = this.calculateScore()
+        this.result = this.calculateResult()
+        this.point += this.result.score
     }
 
-    private calculateResultRows(): ResultRow[] {
+    continue() {
+        this.status = Status.Choosing
+    }
+
+    isWelcome(): boolean { return this.status === Status.Welcome }
+    isChoosing(): boolean { return this.status === Status.Choosing }
+    isResult(): boolean { return this.status === Status.Result }
+    isFinish(): boolean { return this.status === Status.Finish }
+
+    private calculateResult(): Result {
         const values: number[] = []
         for(let i = 0; i < this.numMeasure; i++) {
             const qubits = simulate(this.circuit)
@@ -69,7 +88,7 @@ export class Qoker {
             const cards: Card[] = measures.map((v, i) => 
                 v === 0 ? this.cards[i] : this.subCards[i])
             const rank = this.poker.judgeRanking(cards)
-            const res: ResultRow = {
+            const res: Row = {
                 measures: measures,
                 count: count,
                 prob: count / this.numMeasure,
@@ -85,7 +104,8 @@ export class Qoker {
             return 0
         })
 
-        return rows
+        const score = this.calculateScore(rows)
+        return { score: score, rows: rows}
     }
 
     private encode(measures: number[]): number {
@@ -103,8 +123,8 @@ export class Qoker {
         return result
     }
 
-    private calculateScore(): number {
-        return this.resultRows
+    private calculateScore(rows: Row[]): number {
+        return rows
             .map(v => v.rank.value * v.prob)
             .reduce((a, b) => a + b)
     }
