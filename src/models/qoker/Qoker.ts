@@ -7,11 +7,12 @@ import {simulate} from '../../utils/Simulate'
 import * as Utils from '../../utils/Utils'
 
 
-enum Status {
+export enum Status {
     Welcome,
     Choosing,
     Result,
-    Finish
+    Congurats,
+    GameOver
 }
 
 export class Qoker {
@@ -34,10 +35,11 @@ export class Qoker {
         this.poker = new Poker()
         this.deck = new Deck()
         this.deck.shuffle()
-        this.cards = this.deck.drawCards(Qoker.NUM_CARDS)!
-        this.subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
+        this.cards = this.deck.drawCards(Qoker.NUM_CARDS, false)!
+        this.subCards = this.deck.drawCards(Qoker.NUM_CARDS, false)!
 
         this.circuit = Circuit.empty()
+        this.circuit.numPosition = 10
         this.result = { score: 0, rows: []}
         this.point = Qoker.INITIAL_POINT
         this.remainingCount = Qoker.INITIAL_COUNT
@@ -48,11 +50,11 @@ export class Qoker {
         this.status = Status.Choosing
 
         this.deck.shuffle()
-        const cards = this.deck.drawCards(Qoker.NUM_CARDS)!
+        const cards = this.deck.drawCards(Qoker.NUM_CARDS, false)!
         this.cards.splice(0, cards.length, ...cards)
 
         this.deck.shuffle()
-        const subCards = this.deck.drawCards(Qoker.NUM_CARDS)!
+        const subCards = this.deck.drawCards(Qoker.NUM_CARDS, false)!
         this.subCards.splice(0, subCards.length, ...subCards)
 
         this.circuit.clean()
@@ -60,17 +62,34 @@ export class Qoker {
 
     calculate() {
         this.result = this.calculateResult()
-        this.point += this.result.score
+        this.point *= this.result.score
+        this.remainingCount--
+
+        if(this.point < 1) {
+            this.status = Status.GameOver
+        }
+        else if(this.remainingCount === 0) {
+            this.status = Status.Congurats
+        } else {
+            this.status = Status.Result
+        }
     }
 
     continue() {
         this.status = Status.Choosing
     }
 
+    finish() {
+        this.status = Status.Welcome
+        this.point = Qoker.INITIAL_POINT
+        this.remainingCount = Qoker.INITIAL_COUNT
+    }
+
     isWelcome(): boolean { return this.status === Status.Welcome }
     isChoosing(): boolean { return this.status === Status.Choosing }
     isResult(): boolean { return this.status === Status.Result }
-    isFinish(): boolean { return this.status === Status.Finish }
+    isCongrats(): boolean { return this.status === Status.Congurats }    
+    isGameOver(): boolean { return this.status === Status.GameOver }
 
     private calculateResult(): Result {
         const values: number[] = []
@@ -84,14 +103,13 @@ export class Qoker {
 
         const rows = counts.map(v => {
             const measures = this.decode(v.value)
-            const count = v.count
             const cards: Card[] = measures.map((v, i) => 
                 v === 0 ? this.cards[i] : this.subCards[i])
             const rank = this.poker.judgeRanking(cards)
             const res: Row = {
                 measures: measures,
-                count: count,
-                prob: count / this.numMeasure,
+                count: v.count,
+                prob: v.count / this.numMeasure,
                 cards: cards,
                 rank: rank
             }
@@ -124,6 +142,7 @@ export class Qoker {
     }
 
     private calculateScore(rows: Row[]): number {
+        console.log(rows)
         return rows
             .map(v => v.rank.value * v.prob)
             .reduce((a, b) => a + b)

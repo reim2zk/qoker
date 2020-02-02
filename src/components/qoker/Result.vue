@@ -1,11 +1,15 @@
 <template>
     <table>
+      <tr>
+        <th>
+          (psi, H psi) = {{ Math.round(item.score*100)/100 }}
+        </th>
+      </tr>
       <tr v-for="(row, i) of item.rows" :key="i+'tr'">
         <td>
           <Cards :items="row.cards" :width="cardWidth" :height="cardHeight"></Cards>
         </td>
-        <td> {{ row.measures }} </td>
-        <td> {{ row.count }} </td>
+        <td> {{ row.count }}% </td>
         <td> {{ row.rank.name }} </td>
       </tr>
     </table>

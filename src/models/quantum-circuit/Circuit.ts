@@ -32,7 +32,7 @@ export class Circuit {
         }
         return (
             0 <= iMin   && iMax   < this.qubits.length &&
-            1 <= gate.j && gate.j < this.numPosition)
+            1 <= gate.j && gate.j <= this.numPosition)
     }
     addGate(gateType: GateType): void {
         var gate: Gate = (gateType === GateType.CN) ? 

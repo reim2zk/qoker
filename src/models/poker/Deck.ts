@@ -19,7 +19,7 @@ export class Deck {
     shuffle() {
         Utils.shuffleArray(this.cards)        
     }
-    drawCards(num: number): Card[] | null{
+    drawCards(num: number, deleteDrawed: boolean): Card[] | null{
         if(num < 1) {
             return null
         }
@@ -27,7 +27,9 @@ export class Deck {
             return null
         }
         const cards = this.cards.slice(0, num)
-        this.cards.splice(0, cards.length)
+        if (deleteDrawed) {
+            this.cards.splice(0, cards.length)
+        }        
         return cards
     }
 }

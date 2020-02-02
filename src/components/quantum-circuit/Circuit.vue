@@ -3,17 +3,30 @@
         <rect
             :x=x(-1)
             :y=y(-1)
-            :width="width()"
+            :width="unitWidth"
             :height="height()"
-            fill="silver">
+            fill="white">
         </rect>
         <rect
             :x=x(0)
-            :y=y(this.numQubit)
-            :width="unitWidth*6"
-            :height="unitHeight*2"
-            fill="gray">
+            :y=y(-1)
+            :width="x(item.numPosition+1)-x(0)"
+            :height="height()"
+            fill="white">
         </rect>
+        <rect
+            :x="x(item.numPosition+1)"
+            :y="y(-1)"
+            :width="unitWidth*(inactiveNumPosition-1)"
+            :height="height()"
+            fill="white">
+        </rect>
+        <rect
+            :x=x(0)+2
+            :y=y(this.numQubit)+2
+            :width="unitWidth*6-2"
+            :height="unitHeight*2+2"
+            fill="white"/>
         <text
             v-for="qubit of item.qubits"
             :key="qubit.index+'qubit'"
@@ -28,7 +41,7 @@
             :key="qubit.index + 'line'"
             :x1="x(0)" 
             :y1="y(qubit.index)" 
-            :x2="x(item.numPosition)" 
+            :x2="x(item.numPosition+inactiveNumPosition)" 
             :y2="y(qubit.index)" 
             stroke="black">
         </line>
@@ -45,6 +58,11 @@
             :item="gate" 
             :diameter="unitHeight-2"
         />
+        <text
+            :x="x(-1)-3" 
+            :y="y(this.numQubit+1)+3">
+            Gates
+        </text>
     </svg>
 </template>
 <script lang="ts">
@@ -92,8 +110,14 @@ export default class Circuit extends Vue {
     @Prop({default: 5})
     numQubit!: number
 
+    @Prop({default: 4})
+    inactiveNumPosition!: number
+
     width(): number { 
         return this.qubitWidth + this.item.numPosition * this.unitWidth + this.measureWidth
+    }
+    fullWidth(): number {
+        return this.qubitWidth + (this.item.numPosition + this.inactiveNumPosition) * this.unitWidth + this.measureWidth        
     }
     height(): number { 
         return (this.numQubit+1) * this.unitHeight 
@@ -109,7 +133,7 @@ export default class Circuit extends Vue {
     }
     y(i: number): number { 
         return this.y0 + (i + 0.5) * this.unitHeight 
-    }    
+    }
 
     oneGates(): modelGate.OneGate[] {
         function filter(gate: modelGate.Gate): modelGate.OneGate[] {

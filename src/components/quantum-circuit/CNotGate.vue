@@ -5,19 +5,19 @@
             :x2="x" 
             :y1="yControl"
             :y2="yTarget"
-            stroke="black"/>
+            stroke="red"/>
         <circle
             :cx="x"
             :cy="yControl"
             :r="controlRadius()"
-            fill="black">
+            fill="red">
         </circle>
         <circle
             :cx="x"
             :cy="yTarget"
             :r="targetRadius()"
-            stroke="black"
-            fill="white">
+            stroke="red"
+            fill="red">
         </circle>
         <text 
             :x="x" 
@@ -49,7 +49,7 @@ export default class CNotGate extends Vue {
     diameter!: number
 
     controlRadius(): number {
-        return this.diameter / (2 * 5)
+        return this.diameter / (2 * 3)
     }
 
     targetRadius(): number {
