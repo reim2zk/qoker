@@ -135,26 +135,6 @@ export default class Circuit extends Vue {
         return this.y0 + (i + 0.5) * this.unitHeight 
     }
 
-    oneGates(): modelGate.OneGate[] {
-        function filter(gate: modelGate.Gate): modelGate.OneGate[] {
-            if(gate instanceof modelGate.OneGate)
-                return [gate]
-            else 
-                return []
-        }
-        return this.item.gates.flatMap(v => filter(v))
-    }
-
-    cNotGates(): modelGate.CNotGate[] {
-        function filter(gate: modelGate.Gate): modelGate.CNotGate[] {
-            if(gate instanceof modelGate.CNotGate)
-                return [gate]
-            else 
-                return []
-        }
-        return this.item.gates.flatMap(v => filter(v))
-    }
-
     mousedown(e: MouseEvent): void {
         if(this.selectedPart) {
             return

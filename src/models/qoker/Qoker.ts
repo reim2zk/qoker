@@ -142,7 +142,6 @@ export class Qoker {
     }
 
     private calculateScore(rows: Row[]): number {
-        console.log(rows)
         return rows
             .map(v => v.rank.value * v.prob)
             .reduce((a, b) => a + b)

@@ -25,49 +25,9 @@
       </svg>
     </svg>
     <table v-if="item.isChoosing()">
-      <tr>
-        <th>Ranking</th>
-        <th>Score</th>
-      </tr>
-      <tr>
-        <td>Royal straight flush</td>
-        <td>x12</td>
-      </tr>
-      <tr>
-        <td>straight flush</td>
-        <td>x4</td>
-      </tr>
-      <tr>
-        <td>straight</td>
-        <td>x4</td>
-      </tr>
-      <tr>
-        <td>flush</td>
-        <td>x4</td>
-      </tr>
-      <tr>
-        <td>full house</td>
-        <td>x4</td>
-      </tr>
-      <tr>
-        <td>four cards</td>
-        <td>x4</td>
-      </tr>
-      <tr>
-        <td>three cards</td>
-        <td>x2</td>
-      </tr>
-      <tr>
-        <td>two pair</td>
-        <td>x2</td>
-      </tr>
-      <tr>
-        <td>one pair</td>
-        <td>x1</td>
-      </tr>
-      <tr>
-        <td>nothing</td>
-        <td>x0</td>
+      <th>name</th><th>value</th>
+      <tr v-for="rank of allRankings()" :key="rank.name">
+        <td>{{rank.name}}</td><td>x{{rank.value}}</td>
       </tr>
     </table>
     <Result
@@ -80,13 +40,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Circuit from "../quantum-circuit/Circuit.vue";
-import Cards from "../poker/Cards.vue";
-import Wires from "./Wires.vue";
-import Result from "./Result.vue";
-import * as model from "../../models/qoker/Qoker";
-import * as gateModel from "../../models/quantum-circuit/Gate";
+import { Component, Vue } from "vue-property-decorator"
+import Circuit from "../quantum-circuit/Circuit.vue"
+import Cards from "../poker/Cards.vue"
+import Wires from "./Wires.vue"
+import Result from "./Result.vue"
+import * as model from "../../models/qoker/Qoker"
+import * as rankingModel from "../../models/poker/Poker" // from "../../models/poker/Poker"
+import * as gateModel from "../../models/quantum-circuit/Gate"
 @Component({
   components: {
     Circuit,
@@ -111,6 +72,10 @@ export default class Qoker extends Vue {
     }
   }
 
+  allRankings() {
+    return rankingModel.allRankings()
+  }
+
   start(e: any) {
     this.item.start();
   }
@@ -130,8 +95,7 @@ export default class Qoker extends Vue {
       this.item.status === model.Status.GameOver)
   }
 
-  fnish(e: any) {
-    console.log('finish')
+  finish(e: any) {
     this.item.finish()
   }
 }

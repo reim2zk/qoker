@@ -6,10 +6,24 @@ export interface Ranking {
     value: number
 }
 
+const StraightFlush: Ranking = {name: "Straight Flush", value: 50}
+const Quads: Ranking = {name: 'Quads', value: 20}
+const FullHouse: Ranking = {name: 'Full House', value: 6}
+const Flush: Ranking = {name: 'Flush', value: 5}
+const Straight: Ranking = {name: 'Straight', value: 4}
+const Trips: Ranking = {name: 'Trips', value: 3}
+const TwoPairs: Ranking = {name: 'TwoPair', value: 2}
+const Pair: Ranking = {name: 'Pair', value: 1}
+const Non: Ranking = {name: 'Non', value: 0}
+export function allRankings(): Ranking[] {
+    return [StraightFlush, Quads, FullHouse, Flush, Straight, Trips, TwoPairs, Pair, Non]
+}
+
 export class Poker {
     judgeRanking(originalCards: Card[]): Ranking {
         const cards: Card[] = []
         cards.splice(0, 0, ...originalCards)
+
 
         let sortedCard = cards.sort((card1, card2) => {
             return card1.num - card2.num
@@ -37,23 +51,23 @@ export class Poker {
 
         // TODO Royal flush
         if (isFlush && isStraight) {
-            return {name: 'StraightFlush', value: 50}
+            return StraightFlush
         } else if (maxHit === 4) {
-            return {name: 'Quads', value: 20}
+            return Quads
         } else if (maxHit === 3 && secondHit === 2) {
-            return {name: 'FullHouse', value: 6}
+            return FullHouse
         } else if (isFlush) {
-            return {name: 'Flush', value: 5}
+            return Flush
         } else if (isStraight) {
-            return {name: 'Straight', value: 4}
+            return Straight
         } else if (maxHit === 3) {
-            return {name: 'Trips', value: 3}
+            return Trips
         } else if (maxHit === 2 && secondHit === 2) {
-            return {name: 'TwoPair', value: 2}
+            return TwoPairs
         } else if (maxHit === 2) {
-            return {name: 'Pair', value: 1}
+            return Pair
         } else {
-            return {name: 'Non', value: 0}
+            return Non
         }
     }
 }

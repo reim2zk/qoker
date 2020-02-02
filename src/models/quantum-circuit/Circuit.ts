@@ -26,6 +26,9 @@ export class Circuit {
         } else if(gate instanceof CNotGate) {
             iMin = Math.min(gate.iControl, gate.iTarget)
             iMax = Math.max(gate.iControl, gate.iTarget)
+            if(gate.iControl === gate.iTarget) {
+                return false
+            }
         } else {
             console.log('gate is invalid')
             return false
