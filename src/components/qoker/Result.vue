@@ -2,7 +2,7 @@
     <table>
       <tr>
         <th>
-          (psi, H psi) = {{ Math.round(item.score*100)/100 }}
+          average = {{ Math.round(item.score*100)/100 }}
         </th>
       </tr>
       <tr v-for="(row, i) of item.rows" :key="i+'tr'">
@@ -11,6 +11,7 @@
         </td>
         <td> {{ row.count }}% </td>
         <td> {{ row.rank.name }} </td>
+        <td> (x{{ row.rank.value }}) </td>
       </tr>
     </table>
 </template>

@@ -185,9 +185,7 @@ export default class Circuit extends Vue {
         const bs = [
             new modelGate.OneGate(i, 1, modelGate.GateType.H),
             new modelGate.OneGate(i, 2, modelGate.GateType.X),
-            new modelGate.OneGate(i, 3, modelGate.GateType.Y),
-            new modelGate.OneGate(i, 4, modelGate.GateType.Z),
-            new modelGate.CNotGate(i+1, i, 5)
+            new modelGate.CNotGate(i+1, i, 3)
         ]
         this.buttonGates.splice(0, 0, ...bs)
     }

@@ -1,4 +1,15 @@
+![example](example_circuit.png)
+
 # qoker
+This is implementation of quantum video poker. 
+
+In classical video poker, one has to choose hand or swap for each cards.
+If we assign hand to 0 and swap to 1, hand or swap decisicion can be described with classical digital circuit.
+We extend this situation to quantum one.
+In qunatum computer, we can obtain superposition of 0(=hand) and 1(=swap).
+The score is calculated from average of measurements.
+
+This project uses qramana(https://github.com/qramana/qramana)
 
 ## Project setup
 ```

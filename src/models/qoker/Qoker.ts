@@ -23,12 +23,10 @@ export class Qoker {
     circuit: Circuit
     result: Result
     point: number
-    remainingCount: number
     status: Status
 
     numMeasure: number = 100
     static NUM_CARDS = 5
-    static INITIAL_COUNT = 10
     static INITIAL_POINT = 100
 
     constructor() {
@@ -42,7 +40,6 @@ export class Qoker {
         this.circuit.numPosition = 10
         this.result = { score: 0, rows: []}
         this.point = Qoker.INITIAL_POINT
-        this.remainingCount = Qoker.INITIAL_COUNT
         this.status = Status.Welcome
     }
 
@@ -63,13 +60,9 @@ export class Qoker {
     calculate() {
         this.result = this.calculateResult()
         this.point *= this.result.score
-        this.remainingCount--
 
         if(this.point < 1) {
             this.status = Status.GameOver
-        }
-        else if(this.remainingCount === 0) {
-            this.status = Status.Congurats
         } else {
             this.status = Status.Result
         }
@@ -82,7 +75,6 @@ export class Qoker {
     finish() {
         this.status = Status.Welcome
         this.point = Qoker.INITIAL_POINT
-        this.remainingCount = Qoker.INITIAL_COUNT
     }
 
     isWelcome(): boolean { return this.status === Status.Welcome }
