@@ -30,7 +30,6 @@ export class Circuit {
                 return false
             }
         } else {
-            console.log('gate is invalid')
             return false
         }
         return (
@@ -59,7 +58,6 @@ export class Circuit {
             const finds = findsTarget.concat(findsControl)
             return Utils.exists(finds)
         } else {
-            console.log('GateTypeIsInvalid')
             return false
         }
     }
